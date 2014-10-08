@@ -114,14 +114,19 @@ def getPageInfo(page):
 					pageText = child_of_rev.text #pageText
 					links = re.findall(r'\[\[(.*?)\]\]', pageText)
 					listMap = []
+
+					# Get only the link, not the displayed text
+					links_no_pipe = []
+					for link in links:
+						link = link.split('|')[-1]
+						links_no_pipe.append(link)
+					links = links_no_pipe
+
 		                    	for link in links:
-				                link = link.split('|')[-1]
-				                [link if x !="!@$somephraseitwillneverbe" else x for x in links]
 						linkCount = links.count(link)
 						if 1 == 1: #linkCount > desiredLinkCount-1: #add back to return less links
-				                    #print link + str(linkCount)
-				                    listMap.append((link, linkCount+1))
-				                    while link in links: links.remove(link)
+							 listMap.append((link, linkCount+1))
+				       			 while link in links: links.remove(link)
 					sortedListMap = sorted(listMap, key=lambda link: link[1], reverse=True)#sortedListMap
 					pageInfo = PageInfo(pageTitle, pageText, sortedListMap)#------------------#
 					return pageInfo
@@ -133,8 +138,8 @@ def getPageInfo(page):
 #page = getText('Zodiac')
 page = getText('Zodiac') #getTextIsMisnamed.  It returns the whole page
 pageInfo = getPageInfo(page)
-print pageInfo.title
-print pageInfo.text
+#print pageInfo.title
+#print pageInfo.text
 print str(pageInfo.linksAndCounts)
 
 
